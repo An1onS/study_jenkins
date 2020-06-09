@@ -21,7 +21,7 @@ pipeline {
         stage ('Run'){
             steps{
                 script{
-                    sh "mv /var/lib/jenkins/workspace/pipee2/pipee2/Dockerfile /home/adminci/study_ansible/SakharovAY/Dockerfile"
+                    sh "cp /var/lib/jenkins/workspace/pipee2/pipee2/Dockerfile /home/adminci/study_ansible/SakharovAY/Dockerfile"
                     sh "cd /home/adminci/study_ansible/SakharovAY/Dockerfile"
                     sh "docker build -t pipee2 ."
                     sh "docker run -d pipee2"
