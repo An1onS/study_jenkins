@@ -21,7 +21,9 @@ pipeline {
         stage ('Run'){
             steps{
                 script{
-                    sh "docker build ${WORKSPACE}/pipee2 -t pipee2"
+                    sh "mv /var/lib/jenkins/workspace/pipee2/pipee2/Dockerfile /home/adminci/study_ansible/SakharovAY/Dockerfile"
+                    sh "cd /home/adminci/study_ansible/SakharovAY/Dockerfile"
+                    sh "docker build -t pipee2 ."
                     sh "docker run -d pipee2"
                     sh "docker exec -it pipee2 "df -h > dfh.txt""
                     sh 'docker exec pipee2container grep cpu /proc/stat > cpu.txt'
