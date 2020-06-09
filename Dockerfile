@@ -1,4 +1,3 @@
-FROM nginx
-WORKDIR /usr/share/nginx/html
-COPY web/Hello_docker.html /usr/share/nginx/html
-CMD cd /usr/share/nginx/html && sed -e s/Docker/"$AUTHOR"/ Hello_docker.html > index.html ; nginx -g 'daemon off;'
+FROM alpine
+WORKDIR /usr/share/pipee2
+ADD /home/adminci/study_ansible/SakharovAY/jd_output /usr/share/pipee2/
