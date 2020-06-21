@@ -28,8 +28,13 @@ pipeline {
                             passwordVariable: 'password'
                         )
                     ]){
-                        sh "echo '${password}' | sudo -S docker stop pipee2container"
-                        sh "echo '${password}' | sudo -S docker rm pipee2container"
+                        try{
+                            sh "echo '${password}' | sudo -S docker stop pipee2container"
+                            sh "echo '${password}' | sudo -S docker rm pipee2container"
+                        } 
+                        catch (Exception e) {
+                            print 'No such container, skip cleanup'
+                        }                        
                     }
                 }
             }
