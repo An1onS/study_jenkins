@@ -18,15 +18,38 @@ pipeline {
                 }
             }
         }
-        stage ('Run'){
+        stage ('Stop & rm container'){
             steps{
                 script{
-                    sh "cp /var/lib/jenkins/workspace/pipee2/pipee2/Dockerfile /home/adminci/study_ansible/SakharovAY/Dockerfile"
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'srv_sudo',
+                            usernameVariable: 'username',
+                            passwordVariable: 'password'
+                        )
+                    ]){
+                        sh "echo '${password}' | sudo -S docker stop pipee2container"
+                        sh "echo '${password}' | sudo -S docker rm pipee2container"
+                    }
+                }
+            }
+        }
+        stage ('Build & Run'){
+            steps{
+                script{
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'srv_sudo',
+                            usernameVariable: 'username',
+                            passwordVariable: 'password')
+                    ]){
+                        sh "cp /var/lib/jenkins/workspace/pipee2/pipee2/Dockerfile /home/adminci/study_ansible/SakharovAY/Dockerfile"
                     
-                    sh "docker build /home/adminci/study_ansible/SakharovAY/ -t pipee2"
-                    sh "docker run -itd --name pipee2container pipee2"
-                    sh "docker exec pipee2container "df -h > dfh.txt""
-                    sh "docker exec pipee2container "grep cpu /proc/stat > cpu.txt""
+                        sh "echo '${password}' | sudo -S docker build /home/adminci/study_ansible/SakharovAY/ -t pipee2"
+                        sh "echo '${password}' | sudo -S docker run -itd --name pipee2container pipee2"
+                        sh "echo '${password}' | sudo -S docker exec pipee2container sh -c 'df -h > dfh.txt'"
+                        sh "echo '${password}' | sudo -S docker exec pipee2container sh -c 'grep cpu /proc/stat > cpu.txt'"
+                    }                    
                 }
             }
         }        
